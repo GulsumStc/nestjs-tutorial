@@ -1,6 +1,6 @@
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { config as dotenvConfig } from 'dotenv';
-// import { User } from "src/entities/user.entity";
+import { User } from "src/entities/user.entity";
 import { join } from 'path';
 
 dotenvConfig(); // .env dosyasını yükler
@@ -15,6 +15,7 @@ const config: PostgresConnectionOptions = {
   // entities: [User],
   entities: [join(__dirname, '**', '*.entity.{ts,js}')], 
   synchronize: true,
+  dropSchema: true, // drop the schema and create a new 
   
 }
 

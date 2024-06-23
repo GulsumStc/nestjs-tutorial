@@ -8,7 +8,7 @@ import config from 'ormconfig';
 
 @Module({
   imports: [UserModule, CommentModule,
-    TypeOrmModule.forRoot(config)
+    TypeOrmModule.forRoot({... config, autoLoadEntities: true}),
   ],
   controllers: [AppController],
   providers: [AppService],
