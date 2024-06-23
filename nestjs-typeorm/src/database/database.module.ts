@@ -19,7 +19,7 @@ ConfigService is a service used to manage and utilize configuration settings wit
         // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: consfigService.get('DB_SYNCHRONIZE'), // synchronize entities with database
         autoLoadEntities: true,
-        dropSchema: true,
+        // dropSchema: true,
         
       }),
       inject: [ConfigService],

@@ -25,15 +25,17 @@ export class ItemsService {
     // return this.entityManager.find(Item);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} item`;
+  async findOne(id: number) {
+    return  await this.itemRepo.findOneBy({ id });
   }
 
-  update(id: number, updateItemDto: UpdateItemDto) {
-    return `This action updates a #${id} item`;
+  async update(id: number, updateItemDto: UpdateItemDto) {
+    const item = await this.itemRepo.findOneBy({ id });
+    item.public = updateItemDto.public;
+    await this.entityManager.save(item);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} item`;
+  async remove(id: number) {
+    return this.itemRepo.delete(id);
   }
 }
