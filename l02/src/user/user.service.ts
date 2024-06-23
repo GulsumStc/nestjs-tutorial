@@ -1,15 +1,36 @@
 import { Injectable, Param } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto, updateUserDto } from './dto/createUserDto';
 
 @Injectable() // injectable means that it can be injected into other modules
 export class UserService {
 
 
-  findOne(id: number) {
+
+  constructor(
+    
+    @InjectRepository(User) private readonly userRepo: Repository<User>,
+    
+
+  ) {}
+
+
+  async findOne(id: number) {
+
+    return await this.userRepo.findOne({where: {id: id}});
 
   }
-  create(createUserDto: any) {
+  async create(createUserDto: CreateUserDto) {
 
-    return `This action adds a new user`;
+    const user = await this.userRepo.create(createUserDto);
+    return await this.userRepo.save(user);
+  }
+
+  async update(id: number, updateUserDto: updateUserDto) {
+    
+      return await this.userRepo.update(id, updateUserDto);
 
   }
 
