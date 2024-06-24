@@ -32,7 +32,10 @@ export class ItemsService {
   async update(id: number, updateItemDto: UpdateItemDto) {
     const item = await this.itemRepo.findOneBy({ id });
     item.public = updateItemDto.public;
+    item.name = updateItemDto.name;
+    item.additionalInfo = updateItemDto.additionalInfo;
     await this.entityManager.save(item);
+    return item;
   }
 
   async remove(id: number) {
