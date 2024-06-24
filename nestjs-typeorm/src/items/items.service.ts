@@ -5,6 +5,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { plainToInstance } from 'class-transformer';
 import { Item } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Listing } from './entities/listing.entity';
 @Injectable()
 export class ItemsService {
 
@@ -14,6 +15,13 @@ export class ItemsService {
     private readonly entityManager: EntityManager) { }
   
   async create(createItemDto: CreateItemDto): Promise<Item> {
+
+    const listing = new Listing({
+      ...createItemDto.listing,
+      rating: 0
+
+    });
+    createItemDto.listing = listing;
 
     const newItem = plainToInstance(Item, createItemDto);
     return await this.entityManager.save(newItem);
