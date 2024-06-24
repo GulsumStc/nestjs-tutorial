@@ -1,4 +1,5 @@
 import { CreateListingDto } from "./create-listing.dto";
+import { CreateTagDto } from "./create-tag.dto";
 
 export class CreateItemDto {
   name: string;
@@ -6,4 +7,5 @@ export class CreateItemDto {
   additionalInfo: Record<string, any>;
 
   listing: CreateListingDto;
+  tag: CreateTagDto[];
 }

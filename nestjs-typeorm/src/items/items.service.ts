@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Listing } from './entities/listing.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from './entities/comment.entity';
+import { Tag } from './entities/tag-entity';
 @Injectable()
 export class ItemsService {
 
@@ -26,6 +27,9 @@ export class ItemsService {
 
     createItemDto.listing = listing;
 
+    const tags = createItemDto.tag.map((createTagDto) => new Tag(createTagDto));
+    createItemDto.tag = tags;
+
     const newItem = plainToInstance(Item, createItemDto);
     newItem.comments = [];// there is no comments yet
 
@@ -33,7 +37,7 @@ export class ItemsService {
 
   }
 
-  
+
   async findAll() {
     return await this.itemRepo.find();
     // return this.entityManager.find(Item);
@@ -44,7 +48,7 @@ export class ItemsService {
 
     return await this.itemRepo.findOne({
       where: { id: id },
-      relations: { listing: true, comments: true }, // defined loading strategy : eager
+      relations: { listing: true, comments: true, tag: true }, // defined loading strategy : eager
     });
 
     /* 

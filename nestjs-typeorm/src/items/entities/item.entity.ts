@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { Listing } from './listing.entity';
 import { listenerCount } from 'process';
 import { AbstractEntity } from 'src/database/abstract.entity';
 import { Comment } from './comment.entity';
+import { Tag } from './tag-entity';
 
 
 @Entity('items')
@@ -44,7 +45,11 @@ export class Item extends AbstractEntity<Item> {
 
 
   @OneToMany(() => Comment, (comment) => comment.item, {cascade: true})
-  comments:Comment[]
+  comments: Comment[]
+  
+  @ManyToMany(() => Tag, { cascade: true })
+    @JoinTable() // owner side
+  tag: Tag[];
 
 
 
