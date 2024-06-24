@@ -59,14 +59,40 @@ export class ItemsService {
   async update(id: number, updateItemDto: UpdateItemDto) {
     
     
-     const item = await this.itemRepo.findOneBy({ id });
+    //  const item = await this.itemRepo.findOneBy({ id });
+    //     item.public = updateItemDto.public;
+    //     const comments = updateItemDto.comments.map(
+    //       (createCommentDto) => new Comment(createCommentDto),
+    //     );
+    //     item.comments = comments;
+    //     await this.entityManager.save(item);
+    //     return item; 
+
+    
+    // simulate transaction 
+    await this.entityManager.transaction(async (entityManager) => {
+
+        const item = await this.itemRepo.findOneBy({ id });
         item.public = updateItemDto.public;
         const comments = updateItemDto.comments.map(
           (createCommentDto) => new Comment(createCommentDto),
         );
         item.comments = comments;
-        await this.entityManager.save(item);
-        return item; 
+      await entityManager.save(item);
+      
+
+      throw new Error('Something went wrong'); // to test rollback
+
+      const tagContent = `${Math.random()}`
+
+      const tag = new Tag({
+        content: tagContent
+      })
+
+      await entityManager.save(tag);
+
+
+    });
 
    
   }
