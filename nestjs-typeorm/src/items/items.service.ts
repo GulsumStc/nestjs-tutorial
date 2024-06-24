@@ -6,6 +6,8 @@ import { plainToInstance } from 'class-transformer';
 import { Item } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Listing } from './entities/listing.entity';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { Comment } from './entities/comment.entity';
 @Injectable()
 export class ItemsService {
 
@@ -21,29 +23,48 @@ export class ItemsService {
       rating: 0
 
     });
+
     createItemDto.listing = listing;
 
     const newItem = plainToInstance(Item, createItemDto);
+    newItem.comments = [];// there is no comments yet
+
     return await this.entityManager.save(newItem);
 
   }
 
+  
   async findAll() {
     return await this.itemRepo.find();
     // return this.entityManager.find(Item);
   }
 
   async findOne(id: number) {
-    return  await this.itemRepo.findOneBy({ id });
+    // return  await this.itemRepo.findOneBy({ id }); // that dont give relations data
+
+    return await this.itemRepo.findOne({
+      where: { id: id },
+      relations: { listing: true, comments: true }, // defined loading strategy : eager
+    });
+
+    /* 
+    Query with Eager Loading
+      You can specify eager loading at the query level using the relations option: */
   }
 
   async update(id: number, updateItemDto: UpdateItemDto) {
-    const item = await this.itemRepo.findOneBy({ id });
-    item.public = updateItemDto.public;
-    item.name = updateItemDto.name;
-    item.additionalInfo = updateItemDto.additionalInfo;
-    await this.entityManager.save(item);
-    return item;
+    
+    
+     const item = await this.itemRepo.findOneBy({ id });
+        item.public = updateItemDto.public;
+        const comments = updateItemDto.comments.map(
+          (createCommentDto) => new Comment(createCommentDto),
+        );
+        item.comments = comments;
+        await this.entityManager.save(item);
+        return item; 
+
+   
   }
 
   async remove(id: number) {
