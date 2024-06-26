@@ -1,6 +1,6 @@
-# NestJS Learning Journey
+# NestJS - Learning Journey
 
-Welcome to my NestJS learning repository! This repository contains various  crash courses  that I have gathered while learning NestJS, with a focus on TypeORM, JWT, and other NestJS modules.
+This repository contains various  crash courses  that I have gathered while learning NestJS, with a focus on TypeORM, JWT, and other NestJS modules.
 
 ## Directory Structure
 
