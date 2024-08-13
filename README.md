@@ -40,6 +40,6 @@ NestJS provides a wide range of modules to enhance your application development.
 
 ## Contact
 
-If you have any questions or suggestions, feel free to open an issue or contact me at [your-email@example.com].
+If you have any questions or suggestions, feel free to open an issue or contact me at [gulsum.satic@gmail.com].
 
 Happy Learning!
